@@ -92,7 +92,7 @@ npm run dev
 
 ### 1️⃣  Rode a sua page e preencha **TODOS** os dados
 ### 2️⃣  Entre em serve.js, copie a URL passada (http:// ...) 
-### 3️⃣  Faça um POST para os dados pedidos com seu compilador de API ( Insominia ou outros ) : { "id": "",  "languages": "...", "tipos": "...", "povo":"..." } 
+### 3️⃣  Faça um POST para os dados pedidos com seu compilador de API ( Insomnia ou outros ) : { "id": "",  "languages": "...", "tipos": "...", "povo":"..." } 
 
 ⚠️ **Importante**: Certifique-se de que **ambos os servidores (Python e Node.js)** estão rodando simultaneamente, **caso queira rodar o Backend + FrontEnd**.
 
