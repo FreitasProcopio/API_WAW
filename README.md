@@ -37,7 +37,7 @@ A **API de Tradução - Linguísticas** é uma API inovadora que possibilita a *
 ### 1️⃣ Instalar Dependências
 
 ```bash
-git clone https://github.com/usuario/dear-diary.git
+git clone https://github.com/FreitasProcopio/API_WAW.git
 cd dear-diary
 ```
 
