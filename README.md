@@ -32,16 +32,14 @@ A **API de Tradução - Linguísticas** é uma API inovadora que possibilita a *
 
 ---
 
-## 🧪 Como Rodar o Projeto Localmente
 
-### 1️⃣ Instalar Dependências
+### Clone o Repositório
 
 ```bash
 git clone https://github.com/FreitasProcopio/API_WAW.git
-cd dear-diary
 ```
 
-Instale os pacotes:
+### 1️⃣ Instalar Dependências
 
 ```bash
 npm init -y          # Inicia o projeto Node
@@ -54,6 +52,8 @@ npm i uuid           # Instala a lib para gerar UUIDs
 > [Download Python](https://www.python.org/downloads/)
 
 ---
+
+## 🧪 Como Rodar o Projeto Localmente
 
 ### 2️⃣ Rodar o Frontend (Python)
 
