@@ -6,11 +6,10 @@ const app = express();
 const PORT = 3000; 
 
 app.use(logger);
-
 app.use(express.json());
 
 app.use("/", Dicio);
 
-app.listen(PORT, async () => {
-   logEvents(`✅ Servidor rodando na porta ${PORT}`);
+app.listen(PORT,  () => {
+   logEvents(`✅ Servidor rodando na porta ${PORT}`, "server.log");
 }); 

@@ -76,7 +76,7 @@ export class Palavras {
     }
 
     // Method for loading dados in db.json
-    static #caminhoArquivo = "./src/database/db.json";
+    static #caminhoArquivo = "./src/data/db.json";
     static async carregarDoArquivo() {
         try {
             const data = await readFile(this.#caminhoArquivo, "utf-8");
@@ -97,7 +97,7 @@ export class Palavras {
     static async salvarNoArquivo() {
         try {
             const dados = JSON.stringify(Palavras.pegarPalavrasGuardadas(), null, 2);
-            await writeFile("./src/database/db.json", dados, "utf-8");
+            await writeFile("./src/data/db.json", dados, "utf-8");
         } catch (erro) {
             console.error("Falha ao salvar:", erro.message);
             throw erro; 
