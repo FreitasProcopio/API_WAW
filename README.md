@@ -24,6 +24,7 @@ A **API de Tradução - Linguísticas** é uma API inovadora que possibilita a *
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
+| `GET` | `/Dicio/palavras` | retorna todos os dados em `db.json` |
 | `GET` | `/Dicio/povo` | Filtra os dados no `db.json` por povo |
 | `GET` | `/Dicio/languages` | Filtra os dados no `db.json` por língua |
 | `GET` | `/Dicio/tipos` | Filtra os dados no `db.json` por tipo |

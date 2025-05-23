@@ -66,7 +66,7 @@ const canvas = document.getElementById('canvas'); // Canvas para desenho
         }
 
         // Primeiro verifica se já existe a combinação char+contexto
-        const checkResponse = await fetch('http://localhost:5000/check_symbol', {
+        const checkResponse = await fetch('http://localhost:5000/check_symbols', {
             method: 'POST',
             body: JSON.stringify({ 
                 char: char, // Mantém o case sensitive

@@ -1,95 +1,106 @@
-// Importando o módulo fs/promises para manipulação de arquivos
-// Não precisa ser instalado, pois já vem com o Node.js
-import { writeFile, readFile } from "fs/promises"; 
-
+import { writeFile, readFile } from "fs/promises"; // Standard library in Node.js
 
 export class Palavras {
 
-    // Atributos privados da classe
+    // Private attributes of the class
     #id;
-    #languages;
-    #tipos;
+    #language;
+    #type;
     #contexto;
     #imagem;
     #caracter;
-    #povo;
+    #people;
 
-    // Atributo estático privado para armazenar as palavras
+    // Private static attribute for storing words
     static #guardar_palavras = []
 
-    // Método getter para acessar o atributo estático privado
+    // Method to access the private static attribute
     get guardar_palavras() {
         return Palavras.#guardar_palavras;
     }
 
-    // Construtor da classe inicializa os atributos privados
-    constructor(id,imagem, povo, languages, contexto, tipos, caracter) {
+    // Class constructor and private attribute initializer
+    constructor(id, imagem, people, language, contexto, type, caracter) {
         this.#id = id;
         this.#imagem = imagem;
-        this.#povo = povo;
-        this.#languages = languages;
+        this.#people = people;
+        this.#language = language;
         this.#contexto = contexto;
-        this.#tipos = tipos;
+        this.#type = type;
         this.#caracter = caracter;
     }
 
-    // Método para registrar uma nova palavra adicionando ao array #guardar_palavras
+    // Method to register a new word by adding it to the #guardar_palavras array
     registrar() {
         Palavras.#guardar_palavras.push({
             Id: this.#id,
             Imagem: this.#imagem,
-            Nacao: this.#povo,
-            Lingua: this.#languages,
+            Nacao: this.#people,
+            Lingua: this.#language,
             Contexto: this.#contexto,
-            Tipo: this.#tipos,
+            Tipo: this.#type,
             Caracter: this.#caracter
         });
     }
     
-    // Método para retornar todas as palavras guardadas
+    // Static method to return all stored words
     static pegarPalavrasGuardadas() {
         return this.#guardar_palavras;
     }
 
-    // Métodos para buscar palavras por tipo
-    static buscarPorTipo(tipo) {
-        return this.#guardar_palavras.filter(p => p.Tipo === tipo);
+    // Methods for searching for words by type
+    static buscarPorTipo(type) {
+        return this.#guardar_palavras.filter(p => p.Tipo === type);
     }
 
-    // Métodos para buscar palavras por língua
-    static buscarPorLingua(languages) {
+    // Methods for searching for words by language
+    static buscarPorLingua(language) {
         const normalize = str => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        return this.#guardar_palavras.filter( l => normalize(l.Lingua) === normalize(languages) );
+        return this.#guardar_palavras.filter( l => normalize(l.Lingua) === normalize(language) );
     }
 
-    // Métodos para buscar palavras por povo
-    static buscarPorPovo(povo) {
+    // Methods for searching for words by people
+    static buscarPorPovo(people) {
         const normalize = str => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        return this.#guardar_palavras.filter( p => normalize(p.Nacao) === normalize(povo) );
+        return this.#guardar_palavras.filter( p => normalize(p.Nacao) === normalize(people) );
     }
 
+    // Methods for searching images
     static buscarImagem(char){
+
         const normalize = str => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
         const palavra = this.#guardar_palavras.find(p => normalize(p.Caracter) === normalize(char));
-        return palavra ? palavra.Imagem : null; // Retorna a imagem ou null se não encontrar
+
+        return palavra ? palavra.Imagem : null; 
     }
-    // Método para ler os dados no arquivo JSON e carregar no array #guardar_palavras
-    // Usado para carregar os dados que podem existir no arquivo db.json ( ./data/db.json )
+
+    // Method for loading dados in db.json
+    static #caminhoArquivo = "./src/database/db.json";
     static async carregarDoArquivo() {
         try {
-          const data = await readFile("./src/data/db.json", "utf-8");
-          Palavras.#guardar_palavras = JSON.parse(data);
+            const data = await readFile(this.#caminhoArquivo, "utf-8");
+            const parsed = JSON.parse(data);
+            
+            if (!Array.isArray(parsed)) {
+                throw new Error("Formato inválido do arquivo JSON");
+            }
+            
+            Palavras.#guardar_palavras = parsed;
         } catch (erro) {
-          Palavras.#guardar_palavras = [];
+            console.error(`Erro ao carregar arquivo: ${erro.message}`);
+            Palavras.#guardar_palavras = [];
         }
-      }
+    }
 
-    // Método para salvar os dados no arquivo JSON (./data/db.json)
+    // Method for saving data in JSON file (./data/db.json)
     static async salvarNoArquivo() {
-        await writeFile(
-            "./src/data/db.json",
-            JSON.stringify(Palavras.pegarPalavrasGuardadas(), null, 2),
-            "utf-8"
-        );
+        try {
+            const dados = JSON.stringify(Palavras.pegarPalavrasGuardadas(), null, 2);
+            await writeFile("./src/database/db.json", dados, "utf-8");
+        } catch (erro) {
+            console.error("Falha ao salvar:", erro.message);
+            throw erro; 
+        }
     }
 }

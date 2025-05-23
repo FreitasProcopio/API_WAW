@@ -1,18 +1,22 @@
-import { Router } from "express"; // Importando o Router do express
-import PalavrasController from "../controller/main.controller.js" // Importando o controlador de palavras
+import { Router } from "express"; 
+import {
+  pegarPalavras,
+  buscarPorTipo,
+  buscarPorLingua,
+  buscarPorPovo,
+  criarPalavras,
+  visualizarImagem
+} from '../controller/main.controller.js';
 
-// Criando uma instância do Router, chamada de "palavras". Ela será usada para definir as rotas relacionadas a palavras.
-const palavras = Router(); 
- 
+const router = Router(); 
 
-// Definindo as rotas e associando-as aos métodos do controlador de palavras
-
-palavras.get("/Palavras", PalavrasController.pegarPalavras); // /Dicio/Palavras
-palavras.get("/image/:char", PalavrasController.visualizarImagem); // /Dicio/image/:char (image/A || image/B)
-palavras.post("/tipos", PalavrasController.buscarPorTipo); // /Dicio/tipo ("tipos":"adjetivo")
-palavras.post("/languages", PalavrasController.buscarPorLingua); // /Dicio/language ("languages":"inglês")
-palavras.post("/povo", PalavrasController.buscarPorPovo); // /Dicio/povo ("povo":"tupi")
-palavras.post("/criar", PalavrasController.gerarPalavras); // /Dicio/criar
+router.get("/", pegarPalavras); // /palavras
+router.get("/image/:char", visualizarImagem); // /image/:char (image/A || image/B)
+router.get("/type/:type", buscarPorTipo); // /type ("type":"adjetivo")
 
 
-export default palavras;
+router.post("/language", buscarPorLingua); // /language ("language":"inglês")
+router.post("/people", buscarPorPovo); // /people ("people":"tupi")
+router.post("/create", criarPalavras); // /create
+
+export default router;

@@ -37,6 +37,25 @@ def save_symbol():
 
     return jsonify({"mensagem": f"Símbolo salvo com caractere '{char}'!"})
 
+
+@app.route('/check_symbols', methods=['POST'])
+def check_symbol():
+    data = request.get_json()
+    char = data.get('char')
+    contexto = data.get('contexto')
+    
+    with open(symbols_path, "r") as f:
+        content = json.load(f)
+        for symbol in content['symbols']:
+            if symbol['char'] == char and symbol['contexto'] == contexto:
+                return jsonify({
+                    "exists": True,
+                    "existingChar": char,
+                    "existingContexto": contexto
+                })
+    return jsonify({"exists": False})
+
+
 @app.route('/symbols', methods=['GET']) # Rota para listar os símbolos
 def listar_simbolos(): # Listar os símbolos
     with open(symbols_path, "r") as f:
