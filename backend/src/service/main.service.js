@@ -1,75 +1,103 @@
+import { writeFile, readFile } from "fs/promises";
 import { Palavras } from "../model/main.model.js";
 import { v4 as uuidv4 } from "uuid";
 
-class PalavrasService {
+const caminhoArquivo = "./src/data/db.json";
+let guardar_palavras = [];
 
-  async carregarPalavras() {
-    await Palavras.carregarDoArquivo();
-    return Palavras.pegarPalavrasGuardadas();
-  }
+export const PalavrasService = {
 
-  async buscarPorTipo(type) {
-    await Palavras.carregarDoArquivo();
-    return Palavras.buscarPorTipo(type);
-  }
+    async carregarDoArquivo() {
+        try {
+            const data = await readFile(caminhoArquivo, "utf-8");
+            const parsed = JSON.parse(data);
+            if (!Array.isArray(parsed)) throw new Error("Formato inválido do arquivo JSON");
+            guardar_palavras = parsed;
+        } catch (erro) {
+            console.error(`Erro ao carregar arquivo: ${erro.message}`);
+            guardar_palavras = [];
+        }
+    },
 
-  async buscarPorLingua(language) {
-    await Palavras.carregarDoArquivo();
-    return Palavras.buscarPorLingua(language);
-  }
+    async salvarNoArquivo() {
+        try {
+            const dados = JSON.stringify(guardar_palavras, null, 2);
+            await writeFile(caminhoArquivo, dados, "utf-8");
+        } catch (erro) {
+            console.error("Falha ao salvar:", erro.message);
+            throw erro;
+        }
+    },
 
-  async buscarPorPovo(people) {
-    await Palavras.carregarDoArquivo();
-    return Palavras.buscarPorPovo(people);
-  }
+    registrar(palavra) {
+        guardar_palavras.push(palavra.toJSON());
+    },
 
-  async criarPalavras(language, type, people) {
-    const response = await fetch('http://127.0.0.1:5000/symbols', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
+    carregarPalavras() {
+        return guardar_palavras;
+    },
 
-    if (!response.ok) {
-      throw new Error("Erro ao acessar a API");
-    }
+    async criarPalavras(language, type, people) {
+        const response = await fetch('http://127.0.0.1:5000/symbols', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
 
-    const data = await response.json();
+        if (!response.ok) {
+            throw new Error("Erro ao acessar a API");
+        }
 
-    if (!Array.isArray(data.symbols) || data.symbols.length === 0) {
-      throw new Error("Nenhum símbolo encontrado no JSON.");
-    }
+        const data = await response.json();
 
-    const symbol = data.symbols[data.symbols.length - 1];
-    if (!symbol || !symbol.image || !symbol.char || !symbol.contexto) {
-      throw new Error("Dados do símbolo estão incompletos.");
-    }
+        if (!Array.isArray(data.symbols) || data.symbols.length === 0) {
+            throw new Error("Nenhum símbolo encontrado no JSON.");
+        }
 
-    const { image, char, contexto } = symbol;
+        const symbol = data.symbols[data.symbols.length - 1];
+        if (!symbol || !symbol.image || !symbol.char || !symbol.contexto) {
+            throw new Error("Dados do símbolo estão incompletos.");
+        }
 
-    await Palavras.carregarDoArquivo();
+        const { image, char, contexto } = symbol;
 
-    const novasPalavras = new Palavras(
-      uuidv4(),
-      image,
-      people,
-      language,
-      contexto,
-      type,
-      char         
-    );
+        await this.carregarDoArquivo();
 
-    novasPalavras.registrar();
-    await Palavras.salvarNoArquivo();
+        const novasPalavras = new Palavras(
+            uuidv4(),
+            image,
+            people,
+            language,
+            contexto,
+            type,
+            char
+        );
 
-    return novasPalavras;
-  }
+        this.registrar(novasPalavras);
+        await this.salvarNoArquivo();
 
-  async visualizarImagem(char) {
+        return novasPalavras;
+    },
 
-    await Palavras.carregarDoArquivo();
-    const imagem = Palavras.buscarImagem(char);
-    return Buffer.from(imagem, "base64");
-  }
-}
 
-export default new PalavrasService();
+
+    // ----------------------------------- MÉTODOS DE BUSCAS ----------------------------------------------------
+    buscarPorTipo(type) {
+        return guardar_palavras.filter(p => p.Tipo === type);
+    },
+
+    buscarPorLingua(language) {
+        const normalize = str => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        return guardar_palavras.filter(l => normalize(l.Lingua) === normalize(language));
+    },
+
+    buscarPorPovo(people) {
+        const normalize = str => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        return guardar_palavras.filter(p => normalize(p.Nacao) === normalize(people));
+    },
+
+    async visualizarImagem(char, language) {
+        await this.carregarDoArquivo();
+        const imagens = this.buscarImagem(char, language);
+        return imagens ? [Buffer.from(imagens, "base64")] : [];
+    },
+};
