@@ -2,7 +2,6 @@ const canvas = document.getElementById('canvas'); // Canvas para desenho
  const ctx = canvas.getContext('2d'); // Contexto 2D do canvas
  const statusEl = document.getElementById('status'); // Elemento para mostrar status
  const charInput = document.getElementById('charInput'); // Campo de entrada para o caractere
- const contextInput = document.getElementById('contextInput'); // Campo de entrada para o contexto
  const themeToggle = document.getElementById('themeToggle'); // Botão para alternar tema
  
  let isDrawing = false;
@@ -53,15 +52,9 @@ const canvas = document.getElementById('canvas'); // Canvas para desenho
   async function salvar() { // Salva o símbolo desenhado
     try {
         const char = charInput.value.trim();
-        const contexto = contextInput.value.trim();
 
         if (!char) {
             showStatus("Por favor, insira um caractere para associar", "error");
-            return;
-        }
-
-        if (!contexto) {
-            showStatus("Por favor, insira um contexto para associar", "error");
             return;
         }
 
@@ -70,7 +63,6 @@ const canvas = document.getElementById('canvas'); // Canvas para desenho
             method: 'POST',
             body: JSON.stringify({ 
                 char: char, // Mantém o case sensitive
-                contexto: contexto 
             }),
             headers: { 'Content-Type': 'application/json' }
         });
@@ -82,14 +74,14 @@ const canvas = document.getElementById('canvas'); // Canvas para desenho
         const checkData = await checkResponse.json();
         
         if (checkData.exists) {
-            throw new Error(`Já existe o caractere "${checkData.existingChar}" para o contexto "${checkData.existingContexto}".`);
+            throw new Error(`Já existe o caractere "${checkData.existingChar}".`);
         }
 
         // Se não existir, procede com o salvamento
         const img = canvas.toDataURL('image/png');
         const response = await fetch('http://localhost:5000/save_symbol', {
             method: 'POST',
-            body: JSON.stringify({ image: img, char, contexto }),
+            body: JSON.stringify({ image: img, char}),
             headers: { 'Content-Type': 'application/json' }
         });
 
@@ -101,7 +93,6 @@ const canvas = document.getElementById('canvas'); // Canvas para desenho
         showStatus(data.mensagem || "Símbolo salvo com sucesso!", "success");
         limpar();
         charInput.value = "";
-        contextInput.value = "";
 
     } catch (error) {
         showStatus(error.message || "Erro inesperado.", "error");

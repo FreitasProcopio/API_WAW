@@ -5,18 +5,24 @@ import {
   buscarPorLingua,
   buscarPorPovo,
   criarPalavras,
-  visualizarImagem
+  buscarImagemPorLingua,
+  atualizarPalavras,
+  deletarPalavras
 } from '../controller/main.controller.js';
 
 const router = Router(); 
 
-router.get("/", pegarPalavras); // /palavras
-router.get("/image/:char", visualizarImagem); // /image/:char (image/A || image/B)
-router.get("/type/:type", buscarPorTipo); // /type ("type":"adjetivo")
+router.post("/create", criarPalavras); // /create
+router.get("/all", pegarPalavras); // /palavras
+router.put("/update", atualizarPalavras); // /update
+router.delete("/delete", deletarPalavras); // /delete
 
+router.get("/image/:language", buscarImagemPorLingua); // /image/:language (image/pt || image/en)
+router.get("/type/:type", buscarPorTipo); // /type ("type":"adjetivo")
 
 router.post("/language", buscarPorLingua); // /language ("language":"inglês")
 router.post("/people", buscarPorPovo); // /people ("people":"tupi")
-router.post("/create", criarPalavras); // /create
+
+
 
 export default router;

@@ -21,11 +21,11 @@ export class Palavras {
         return {
             Id: this.#id,
             Imagem: this.#imagem,
-            Nacao: this.#people,
-            Lingua: this.#language,
-            Contexto: this.#contexto,
-            Tipo: this.#type,
-            Caracter: this.#caracter
+            people: this.#people,
+            language: this.#language,
+            contexto: this.#contexto,
+            type: this.#type,
+            caracter: this.#caracter
         };
     }
 }

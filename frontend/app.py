@@ -21,15 +21,13 @@ def save_symbol():
     data = request.get_json() # Recebe os dados do frontend
     image = data['image'].split(',')[1] # Remove o prefixo "data:image/png;base64,"
     char = data['char'] # Caractere associado à imagem
-    contexto = data['contexto'] # Contexto associado à imagem
     
     # Salvar no JSON
     with open(symbols_path, 'r') as f:
         content = json.load(f)
         content['symbols'].append({
             "image": image,
-            "char": char,
-            "contexto": contexto 
+            "char": char
         })
 
     with open(symbols_path, 'w') as f: # Atualiza o arquivo JSON
@@ -42,16 +40,14 @@ def save_symbol():
 def check_symbol():
     data = request.get_json()
     char = data.get('char')
-    contexto = data.get('contexto')
     
     with open(symbols_path, "r") as f:
         content = json.load(f)
         for symbol in content['symbols']:
-            if symbol['char'] == char and symbol['contexto'] == contexto:
+            if symbol['char'] == char:
                 return jsonify({
                     "exists": True,
-                    "existingChar": char,
-                    "existingContexto": contexto
+                    "existingChar": char
                 })
     return jsonify({"exists": False})
 
