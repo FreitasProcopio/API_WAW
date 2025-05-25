@@ -1,8 +1,3 @@
----
-title: Endpoint /routes
-description: Visão geral de todas as rotas principais da API.
----
-
 # Endpoint `/routes`
 
 O endpoint `/routes` (ou esta documentação) apresenta um resumo das principais rotas disponíveis na API.

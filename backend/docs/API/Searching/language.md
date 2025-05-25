@@ -1,8 +1,3 @@
----
-title: Endpoint /language
-description: Filtra as palavras pela língua informada.
----
-
 # Endpoint `/language`
 
 O endpoint `/language` permite filtrar as palavras cadastradas pela língua.

@@ -1,8 +1,3 @@
----
-title: Endpoint /delete
-description: Remove uma palavra da base de dados pelo id.
----
-
 # Endpoint `/delete`
 
 O endpoint `/delete` permite remover uma palavra cadastrada no sistema, a partir do seu identificador único.

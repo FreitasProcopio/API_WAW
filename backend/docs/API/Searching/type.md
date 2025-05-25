@@ -1,8 +1,3 @@
----
-title: Endpoint /type/:type
-description: Filtra as palavras pelo tipo informado.
----
-
 # Endpoint `/type/:type`
 
 O endpoint `/type/:type` permite filtrar as palavras cadastradas pelo campo tipo.

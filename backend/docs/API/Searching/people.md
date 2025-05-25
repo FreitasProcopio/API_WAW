@@ -1,8 +1,3 @@
----
-title: Endpoint /people
-description: Filtra as palavras pelo povo informado.
----
-
 # Endpoint `/people`
 
 O endpoint `/people` permite filtrar as palavras cadastradas pelo povo.

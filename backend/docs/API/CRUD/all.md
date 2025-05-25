@@ -1,8 +1,3 @@
----
-title: Endpoint /all
-description: Retorna todas as palavras cadastradas na base de dados.
----
-
 # Endpoint `/all`
 
 O endpoint `/all` permite consultar todas as palavras cadastradas no sistema.

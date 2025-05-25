@@ -1,8 +1,3 @@
----
-title: Endpoint /create
-description: Cria uma nova palavra na base de dados.
----
-
 # Endpoint `/create`
 
 O endpoint `/create` permite adicionar uma nova palavra ao sistema.

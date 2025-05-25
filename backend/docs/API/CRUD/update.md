@@ -1,8 +1,3 @@
----
-title: Endpoint /update
-description: Atualiza uma palavra existente na base de dados.
----
-
 # Endpoint `/update`
 
 O endpoint `/update` permite atualizar os dados de uma palavra já cadastrada no sistema, a partir do seu identificador único.

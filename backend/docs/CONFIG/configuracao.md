@@ -1,8 +1,3 @@
----
-title: Configuração para Desenvolvimento
-description: Guia rápido para configurar, testar e documentar o projeto em ambiente local.
----
-
 # ⚙️ Configuração para Desenvolvimento
 
 ## Modo de Desenvolvimento

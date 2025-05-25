@@ -1,8 +1,3 @@
----
-title: Endpoint /image/:language
-description: Retorna a imagem associada à língua informada.
----
-
 # Endpoint `/image/:language`
 
 O endpoint `/image/:language` retorna a imagem (em PNG/base64) associada à língua informada.

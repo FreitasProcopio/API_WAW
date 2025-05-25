@@ -1,7 +1,3 @@
----
-title: Visão Geral do Projeto
----
-
 # 🌐 API de Tradução - Linguísticas
 
 Bem-vindo à documentação oficial da API de Tradução - Linguísticas!
